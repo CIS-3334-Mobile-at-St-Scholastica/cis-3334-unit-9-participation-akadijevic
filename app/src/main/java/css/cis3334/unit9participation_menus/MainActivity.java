@@ -1,5 +1,7 @@
 package css.cis3334.unit9participation_menus;
 
+import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
@@ -12,6 +14,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.Toast;
 
 public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
@@ -29,6 +32,15 @@ public class MainActivity extends AppCompatActivity
             public void onClick(View view) {
                 Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
                         .setAction("Action", null).show();
+
+                Intent intent = new Intent(Intent.ACTION_SENDTO);
+                intent.setData(Uri.parse("mailto:")); // only email apps should handle this
+                intent.putExtra(Intent.EXTRA_EMAIL, "akadijevic@css.edu");
+                intent.putExtra(Intent.EXTRA_SUBJECT, "Testing");
+                if (intent.resolveActivity(getPackageManager()) != null) {
+                    startActivity(intent);
+                }
+
             }
         });
 
@@ -68,8 +80,41 @@ public class MainActivity extends AppCompatActivity
 
         //noinspection SimplifiableIfStatement
         if (id == R.id.action_settings) {
+            Intent intent = new Intent(this, SettingsActivity.class);
+            startActivity(intent);
             return true;
         }
+        else if(id == R.id.action_add) {
+            Toast.makeText(getApplicationContext(), "adding study mates is not available yet",
+                    Toast.LENGTH_LONG).show();
+            return true;
+        }
+        else if (id == R.id.action_delete) {
+            Toast.makeText(getApplicationContext(), "deleting study mates is not available yet",
+                    Toast.LENGTH_LONG).show();
+            return true;
+        }
+
+        else if (id == R.id.action_email) {
+            Intent intent = new Intent(Intent.ACTION_SENDTO);
+            intent.setData(Uri.parse("mailto:")); // only email apps should handle this
+            intent.putExtra(Intent.EXTRA_EMAIL, "akadijevic@css.edu");
+            intent.putExtra(Intent.EXTRA_SUBJECT, "Testing");
+            if (intent.resolveActivity(getPackageManager()) != null) {
+                startActivity(intent);
+            }
+            return true;
+        }
+        else if (id == R.id.action_sms) {
+            Intent sendIntent = new Intent(Intent.ACTION_VIEW);
+            sendIntent.setData(Uri.parse("smsto:2186939286"));
+            sendIntent.putExtra("sms_body", "Testing");
+            if (sendIntent.resolveActivity(getPackageManager()) != null) {
+                startActivity(sendIntent);
+            }
+            return true;
+        }
+        else
 
         return super.onOptionsItemSelected(item);
     }
